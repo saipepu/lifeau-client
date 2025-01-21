@@ -1,16 +1,23 @@
 "use client"
 
 import { Loader } from "lucide-react";
+// import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      window.location.href = "/dashboard";
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [])
+  // const searchParams = useSearchParams();
+
+  // useEffect(() => {
+  //   const token = searchParams.get("token");
+  //   if (token) {
+  //     localStorage.setItem("life.au-token", token);
+  //   }
+  //   const timer = setTimeout(() => {
+  //     window.location.href = "/dashboard";
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, [])
 
   return (
     <div className="relative w-full h-full flex flex-col justify-start items-center p-5">

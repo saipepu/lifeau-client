@@ -1,4 +1,4 @@
-import { socketApi } from '@/app/_api/api'
+import { socketApi } from '@/app/api/api'
 import { io } from 'socket.io-client'
 
 const socket = io(socketApi, {

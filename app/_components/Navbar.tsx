@@ -5,18 +5,30 @@ import React, { useContext, useEffect, useState } from 'react'
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { ThemeContext } from '@/utils/hooks/themeContext';
+import { getPublicProfile } from '@/app/api/profile/getPublicProfile';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 const Navbar = () => {
 
   const [activeTheme, setActiveTheme] = useState<string>('system');
   const { theme, setTheme } = useContext(ThemeContext)
+  const [user, setUser] = useState<any>(null)
+  const { data: session } = useSession()
+  console.log(session, 'session')
+
+  const handleLogout = async () => {
+    localStorage.removeItem('life.au-token')
+  }
 
   useEffect(() => {
+
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme === "system" || !savedTheme) {
       applySystemTheme();
@@ -96,28 +108,53 @@ const Navbar = () => {
       <div className='flex justify-center items-center gap-2'>
         <div className='flex justify-end items-center gap-2'>
           <div className='flex justify-start items-center gap-2'>
-            <div className='px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md'>
-              Login
-            </div>
-            <div className='px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md'>
-              Register
-            </div>
+            {session?.user ?
+              <DropdownMenu>
+                <DropdownMenuTrigger className='text-sm outline-none flex justify-start items-center gap-2 dark:border-transparent rounded-md px-2 py-1 cursor-pointer'>
+                  {session?.user?.name}
+                  <div className='w-4 h-4 rounded-full overflow-hidden'>
+                    <img src={session?.user?.image || ''} alt="profile" className='w-full h-full object-cover' />
+                  </div>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem className='cursor-pointer'>Profile</DropdownMenuItem>
+                    <DropdownMenuItem className='cursor-pointer' onClick={() => {
+                      handleLogout()
+                      signOut({ redirectTo: '/landing'})
+                    }}>
+                      <div
+                        className='w-full text-red-200 text-sm cursor-pointerrounded-md'>
+                        Logout
+                      </div>
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+              :
+              <div
+                className='px-2 py-1.5 text-sm cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md'
+                onClick={() => signIn('github') }
+              >
+                Login
+              </div>
+            }
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger className='text-sm outline-none flex justify-start items-center gap-2 border dark:border-transparent rounded-md px-2 py-1'>
+              {activeTheme === 'dark' && <Moon size={18} strokeWidth={1.5} />}
+              {activeTheme === 'light' && <Sun size={18} strokeWidth={1.5} />}
+              {activeTheme === 'system' && <Laptop size={18} strokeWidth={1.5}/>}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuRadioGroup value={activeTheme} onValueChange={(value) => handleThemeChange(value)}>
+                <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
+                <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
+              </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger className='text-sm outline-none flex justify-start items-center gap-2 border dark:border-transparent rounded-md px-2 py-1'>
-            {activeTheme === 'dark' && <Moon size={24} />}
-            {activeTheme === 'light' && <Sun size={24} />}
-            {activeTheme === 'system' && <Laptop size={24} />}
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuRadioGroup value={activeTheme} onValueChange={(value) => handleThemeChange(value)}>
-              <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="system">System</DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
     </div>
   )
