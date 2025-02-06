@@ -19,9 +19,7 @@ const Navbar = () => {
 
   const [activeTheme, setActiveTheme] = useState<string>('system');
   const { theme, setTheme } = useContext(ThemeContext)
-  const [user, setUser] = useState<any>(null)
   const { data: session } = useSession()
-  console.log(session, 'session')
 
   const handleLogout = async () => {
     localStorage.removeItem('life.au-token')
@@ -84,12 +82,12 @@ const Navbar = () => {
   }
 
   return (
-    <div className='w-full max-w-[1500px] px-5 py-2 flex justify-between items-center'>
+    <div className='w-full max-w-[1500px] px-5 py-4 flex justify-between items-center'>
       <div
         className='flex justify-start items-center gap-2 cursor-pointer'
         onClick={() => window.location.href = '/landing'}
       >
-        <div className='relative flex justify-center items-center'>
+        <div className='relative flex justify-center items-center pl-2'>
           <svg width="26" height="24" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">
             <g clipPath="url(#clip0_1251_384)">
             <path fillRule="evenodd" clipRule="evenodd" d="M24.488 27.5051C25.2054 28.7501 26.5345 29.5172 27.973 29.5172C31.0656 29.5172 33.0005 26.1769 31.4585 23.5002L19.1666 2.1674C17.4317 -0.843503 13.0289 -0.685387 11.5152 2.44216L1.41376 23.313C-1.47653 29.1815 0.183116 29.5172 5.31219 29.5172H8.33569C11.6661 29.5172 13.7496 25.9198 12.0884 23.0376L8.09828 16.115C6.9254 14.0801 7.62673 11.4811 9.66474 10.31C11.7028 9.13887 14.3057 9.83914 15.4786 11.874L24.488 27.5051Z" fill='currentColor'
@@ -107,6 +105,11 @@ const Navbar = () => {
       </div>
       <div className='flex justify-center items-center gap-2'>
         <div className='flex justify-end items-center gap-2'>
+          <div className="mr-auto px-3 rounded-md bg-purple-200 dark:bg-purple-500 flex justify-center items-center">
+            <p className="text-sm font-medium text-purple-500 dark:text-purple-200 font-mono">
+              Admin
+            </p>
+          </div>
           <div className='flex justify-start items-center gap-2'>
             {session?.user ?
               <DropdownMenu>
