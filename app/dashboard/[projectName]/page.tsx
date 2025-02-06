@@ -10,6 +10,7 @@ import { deleteContainer } from '@/app/api/container/deleteContainer';
 import { Button } from '@/components/ui/button';
 import { Loader } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { queueApi } from '@/app/api/api';
 
 const page = () => {
 
@@ -51,7 +52,7 @@ const page = () => {
       console.log("Error: Missing required fields")
       return "Error: Missing required fields"
     }
-    const response = await fetch("http://localhost:4001/build", {
+    const response = await fetch(`${queueApi}/build`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
