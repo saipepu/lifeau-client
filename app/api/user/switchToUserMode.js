@@ -2,7 +2,7 @@ import { api } from '../api.js';
 
 export const switchToUserMode = async (dto) => {
 
-  console.log('SWITCHING TO USEr MODE');
+  console.log('SWITCHING TO USER MODE');
   const response = await fetch(`${api}/user/switch-to-user-mode`, {
     method: 'POST',
     headers: {
