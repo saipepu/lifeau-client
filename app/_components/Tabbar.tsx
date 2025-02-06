@@ -12,8 +12,8 @@ const Tabbar = ({
 }) => {
 
   return (
-    <div className='w-full flex justify-between items-center'>
-      <div className='w-full px-5 flex justify-start items-center gap-2 border-b dark:border-stone-700'>
+    <div className='w-full max-w-[1500px] flex justify-between items-center'>
+      <div className='w-full px-5 flex justify-start items-center gap-2'>
         {tabs.map((tab, index) => (
           <div
             key={index}
