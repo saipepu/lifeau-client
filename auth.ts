@@ -37,10 +37,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //   return false
         // }
 
-        console.log(user, 'user')
-        console.log(account, 'account')
-        console.log(profile, 'profile')
-
         const response = await fetch(`${api}/auth/signup`, {
           method: "POST",
           headers: {
@@ -58,8 +54,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           user.accessToken = response.message.accessToken;
           user.lifeAuUser = {...response.message.user, githubToken: account?.access_token};
           return true;
+        } else {
+          console.log(response.message, "response.message");
+          return false;
         }
-        return true;
       } catch (error) {
         console.log(error, "error");
         return false;
