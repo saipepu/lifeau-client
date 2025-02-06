@@ -59,7 +59,7 @@ const Dashbaord = () => {
   return (
     <>
       <div className='w-full flex flex-col justify-start items-center gap-1 bg-white dark:bg-stone-950 border-b dark:border-stone-700'>
-        <Tabbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={session?.lifeAuUser?.mode === 'admin' ? adminTabs : tabs} />
+        <Tabbar selectedTab={selectedTab} setSelectedTab={setSelectedTab} tabs={session?.lifeAuUser?.mode === 'admin' ? adminTabs : tabs} numberOfRepositories={allUsersContainers.length}/>
       </div>
 
       {/* Main Content */}
