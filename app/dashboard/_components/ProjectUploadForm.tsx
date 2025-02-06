@@ -19,6 +19,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
 import ContainerTable from '@/app/_components/ContainerTable';
+import { queueApi } from '@/app/api/api';
 const Confetti = dynamic(() => import('@/components/ui/confetti'), {
   ssr: false,
 });
@@ -41,7 +42,7 @@ const ProjectUploadForm = () => {
 
     setLoading(true);
     setMessage("It may take a few minutes to deploy your project. Please wait...");
-    const response = await fetch("http://localhost:4001/build", {
+    const response = await fetch(`${queueApi}/build`, {
       method: "POST",
       headers: {
         "Accept": "application/json",
@@ -75,6 +76,7 @@ const ProjectUploadForm = () => {
   }
 
   const GetUserGitRepos = async () => {
+    console.log(session)
     const response = await fetch("https://api.github.com/user/repos", {
       method: "GET",
       headers: {
