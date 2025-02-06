@@ -84,7 +84,7 @@ const Navbar = () => {
   }
 
   return (
-    <div className='w-full px-5 py-2 flex justify-between items-center'>
+    <div className='w-full max-w-[1500px] px-5 py-2 flex justify-between items-center'>
       <div
         className='flex justify-start items-center gap-2 cursor-pointer'
         onClick={() => window.location.href = '/landing'}
