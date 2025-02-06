@@ -1,10 +1,15 @@
 import React from "react";
 import { differenceInDays } from "date-fns";
 
-const RepoCard = ({ container }: { container: any }) => {
+const RepoCard = ({ container, adminView }: { container: any, adminView: boolean }) => {
   return (
     <div className="p-5 bg-white dark:bg-stone-950 rounded-md bdr cursor-pointer duration-300 hover:bg-stone-100 hover:dark:bg-stone-900">
       <div className="w-full flex flex-col justify-between items-center gap-2">
+        {adminView && 
+          <div className="w-full flex justify-start items-center gap-2">
+            <p className="text-lg font-semibold">{container.githubUrl.split('/')[3]}</p>
+          </div>
+        }
         <div className="w-full flex justify-start items-center gap-2">
           <div className="w-fit rounded-md flex justify-center items-center">
             <svg
