@@ -105,11 +105,13 @@ const Navbar = () => {
       </div>
       <div className='flex justify-center items-center gap-2'>
         <div className='flex justify-end items-center gap-2'>
-          <div className="mr-auto px-3 rounded-md bg-purple-200 dark:bg-purple-500 flex justify-center items-center">
-            <p className="text-sm font-medium text-purple-500 dark:text-purple-200 font-mono">
-              Admin
-            </p>
-          </div>
+          {session?.lifeAuUser.mode === 'admin' && (
+            <div className="mr-auto px-3 rounded-md bg-purple-200 dark:bg-purple-500 flex justify-center items-center">
+              <p className="text-sm font-medium text-purple-500 dark:text-purple-200 font-mono">
+                Admin
+              </p>
+            </div>
+          )}
           <div className='flex justify-start items-center gap-2'>
             {session?.user ?
               <DropdownMenu>
