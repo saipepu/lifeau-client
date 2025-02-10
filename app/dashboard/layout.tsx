@@ -18,7 +18,7 @@ const layout = ({
         <Navbar />
       </div>
 
-      <div className='w-full flex-1 flex flex-col justify-start items-center gap-1 bg-transparent pb-10'>
+      <div className='w-full flex-1 flex flex-col justify-start items-center bg-transparent pb-10'>
         {children}
       </div>
 
