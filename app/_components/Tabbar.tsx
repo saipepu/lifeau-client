@@ -2,6 +2,7 @@
 import { SparklesText } from '@/components/sparkles-text';
 import { Sparkles } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { usePathname, useRouter } from 'next/navigation';
 import React from 'react'
 
 const Tabbar = ({
@@ -13,10 +14,12 @@ const Tabbar = ({
   selectedTab: string,
   setSelectedTab: (tab: string) => void,
   tabs: string[],
-  numberOfRepositories: number
+  numberOfRepositories: string
 }) => {
 
   const { data: session } = useSession();
+  const router = useRouter();
+  const path = usePathname();
 
   return (
     <div className='w-full max-w-[1500px] flex justify-between items-center'>
@@ -28,14 +31,17 @@ const Tabbar = ({
               text-sm text-stone-400 cursor-pointer rounded-md
               flex flex-col justify-start items-center
             `}
-            onClick={() => setSelectedTab(tab)}
           >
-            {(session?.lifeAuUser?.mode === 'admin' && tab === tabs[0]) ? (
+            {(session?.lifeAuUser?.mode === 'admin' && tab === 'All Repositories') ? (
               <div
                 className={`
                   pb-1 duration-300 border-b-[2px] flex justify-start items-center gap-2
                   ${selectedTab === tab ? 'font-medium border-purple-500 dark:border-purple-200' : 'border-transparent'}
                 `}
+                onClick={() => {
+                  setSelectedTab(tab)
+                  if(path !== '/dashboard') router.push('/dashboard')
+                }}
               >
                 <div className="font-bold flex justify-start items-center gap-2 p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md duration-300">
                   <Sparkles size={18} strokeWidth={1.5} className='stroke-purple-500 dark:stroke-purple-200' />
@@ -53,6 +59,7 @@ const Tabbar = ({
                   pb-1 duration-300 border-b-[2px]
                   ${selectedTab === tab ? 'font-medium text-black dark:text-white border-black dark:border-white' : 'border-transparent'}
                 `}
+                onClick={() => setSelectedTab(tab)}
               >
                 <p className="px-3 py-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-800 rounded-md duration-300">
                   {tab}
