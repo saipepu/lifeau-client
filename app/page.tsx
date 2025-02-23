@@ -1,23 +1,23 @@
 "use client"
 
-import { Loader } from "lucide-react";
-// import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function Home() {
 
   // const searchParams = useSearchParams();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   const token = searchParams.get("token");
-  //   if (token) {
-  //     localStorage.setItem("life.au-token", token);
-  //   }
-  //   const timer = setTimeout(() => {
-  //     window.location.href = "/dashboard";
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, [])
+  useEffect(() => {
+    // const token = searchParams.get("token");
+    // if (token) {
+    //   localStorage.setItem("life.au-token", token);
+    // }
+    const timer = setTimeout(() => {
+      router.push("/landing");
+    }, 1000);
+    return () => clearTimeout(timer);
+  }, [])
 
   return (
     <div className="relative w-full h-full flex flex-col justify-start items-center p-5">
