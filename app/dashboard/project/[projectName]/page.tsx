@@ -121,7 +121,7 @@ const page = () => {
 
     if(response.success) {
       console.log(response);
-      let res = "Kubernetes Deployment Successfull! 🚀 App link => http://pitchtrack-client.life-au.live"
+      let res = `Kubernetes Deployment Successfull! 🚀 App link => http://${project?.name}.life-au.live`
       let link = res.split('=>')[1].trim()
       setDeployedLink(link)
       setMessage("Your project has been deployed successfully!");
