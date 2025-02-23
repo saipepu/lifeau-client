@@ -7,7 +7,7 @@ const RepoCard = ({ container, adminView }: { container: any, adminView: boolean
       <div className="w-full flex flex-col justify-between items-center gap-2">
         {adminView && 
           <div className="w-full flex justify-start items-center gap-2">
-            <p className="text-lg font-semibold">{container.githubUrl.split('/')[3]}</p>
+            <p className="text-lg font-semibold">{container?.githubUrl.split('/')[3]}</p>
           </div>
         }
         <div className="w-full flex justify-start items-center gap-2">
@@ -35,14 +35,14 @@ const RepoCard = ({ container, adminView }: { container: any, adminView: boolean
               </defs>
             </svg>
           </div>
-          <p className="text-sm font-medium">{container.name}</p>
+          <p className="text-sm font-medium">{container?.name}</p>
           <div className={`
             font-semibold p-1 px-2 ml-auto text-xs rounded-full
-            ${container.status === "DEPLOYED" && "text-green-500 bg-green-200 dark:opacity-90"}
-            ${container.status === "PENDING" && "text-yellow-500 bg-yellow-200 dark:opacity-90"}
-            ${container.status === "FAILED" && "text-red-500 bg-red-200 dark:opacity-90"}
+            ${container?.status === "DEPLOYED" && "text-green-500 bg-green-200 dark:opacity-90"}
+            ${container?.status === "PENDING" && "text-yellow-500 bg-yellow-200 dark:opacity-90"}
+            ${container?.status === "FAILED" && "text-red-500 bg-red-200 dark:opacity-90"}
             `}>
-            {container.status}
+            {container?.status}
           </div>
         </div>
         <div className="w-full flex flex-col justify-start items-start">
@@ -62,11 +62,11 @@ const RepoCard = ({ container, adminView }: { container: any, adminView: boolean
                 </defs>
               </svg>
             </div>
-            <a href={container.githubUrl} className="hover:underline duration-300 text-xs font-medium text-black dark:text-white">{container.githubUrl.split('/').splice(-2,2).join('/')}</a>
+            <a href={container?.githubUrl} className="hover:underline duration-300 text-xs font-medium text-black dark:text-white">{container?.githubUrl.split('/').splice(-2,2).join('/')}</a>
           </div>
         </div>
         <div className="w-full flex flex-col justify-start items-start gap-1">
-          <p className="text-xs font-normal">{differenceInDays(new Date(), new Date(container.updatedAt))}d ago</p>
+          <p className="text-xs font-normal">{differenceInDays(new Date(), new Date(container?.updatedAt))}d ago</p>
         </div>
       </div>
     </div>
