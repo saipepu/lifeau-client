@@ -30,13 +30,13 @@ const Landing = () => {
           <div className="relative z-10 w-full max-w-[1000px] flex flex-col items-center justify-center gap-2">
             <div className="w-full flex justify-center items-center pt-40">
               <div className="relative w-full flex flex-col justify-start items-center">
-                <p className="text-6xl font-semibold text-center">Steamline Your Deployment<br /> With Life.au</p>
+                <p className="text-2xl md:text-6xl font-semibold text-center">Steamline Your Deployment<br /> With Life.au</p>
                 <div className="absolute top-[100%] w-full flex justify-center items-center">
                   <SparklesPreview />
                 </div>
               </div>
             </div>
-            <p className="z-20 max-w-[60%] text-sm md:text-base text-center mt-28 leading-none tracking-tight">
+            <p className="z-20 max-w-[80%] md:max-w-[60%] text-sm md:text-base text-center mt-28 leading-none tracking-tight">
               Deploy smarter and faster with Life.au. Our platform ensures effortless efficiency, helping you save time and reduce complexity, so you can focus on what truly matters.
             </p>
             <Button
