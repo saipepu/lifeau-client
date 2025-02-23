@@ -5,7 +5,16 @@ import React from 'react'
 
 const page = () => {
 
-  const tabs = ['My Projects', 'General']
+  const tabs = [
+    {
+      name: "General",
+      link: '/dashboard/profile/general'
+    },
+    {
+      name: "My Projects",
+      link: '/dashboard/profile/my-projects'
+    }
+  ]
 
   return (
     <div className='w-full h-full flex flex-col justify-start items-center'>
