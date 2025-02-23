@@ -7,9 +7,13 @@ import { Button } from '@/components/ui/button'
 import { SparklesPreview } from './_components/Sparkle'
 import { ThemeContext } from '@/utils/hooks/themeContext';
 import Footer from '../_components/Footer';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const Landing = () => {
 
+  const router = useRouter();
+  const { data: session } = useSession();
   const [theme, setTheme] = React.useState('light');
 
   return (
@@ -36,7 +40,13 @@ const Landing = () => {
               Deploy smarter and faster with Life.au. Our platform ensures effortless efficiency, helping you save time and reduce complexity, so you can focus on what truly matters.
             </p>
             <Button
-              onClick={() => window.location.href = "/dashboard"}
+              onClick={() => {
+                if(session?.lifeAuUser.mode === 'admin') {
+                  router.push('/dashboard/admin/all-repositories')
+                } else {
+                  router.push('/dashboard/profile/all-repositories')
+                }
+              }}
               className="z-20 rounded-full bg-black dark:bg-white"
             >
               <div className='relative flex justify-center items-center'>
