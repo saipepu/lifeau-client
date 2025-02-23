@@ -18,7 +18,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 const Navbar = () => {
-
   const path = usePathname();
   const router = useRouter();
   const { data: session } = useSession();
@@ -138,14 +137,23 @@ const Navbar = () => {
       </div>
       <div className="hidden md:flex justify-center items-center gap-2">
         {session?.lifeAuUser?.mode === "admin" && (
-          <Button onClick={() => router.push("/dashboard/admin/all-repositories")} className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+          <Button
+            onClick={() => router.push("/dashboard/admin/all-repositories")}
+            className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-40"
+          >
             <p className="text-sm">Dashboard</p>
           </Button>
         )}
-        <Button onClick={() => {}} className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+        <Button
+          onClick={() => {}}
+          className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-40"
+        >
           <p className="text-sm">Feedback</p>
         </Button>
-        <Button onClick={() => {}} className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+        <Button
+          onClick={() => {}}
+          className="flex px-2 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-40"
+        >
           <p className="text-sm">Help</p>
         </Button>
         <div className="flex justify-end items-center gap-2">
@@ -163,7 +171,10 @@ const Navbar = () => {
                   {session?.user?.name}
                   <div className="w-4 h-4 rounded-full overflow-hidden">
                     <img
-                      src={session?.user?.image || "https://via.placeholder.com/150"}
+                      src={
+                        session?.user?.image ||
+                        "https://via.placeholder.com/150"
+                      }
                       alt="profile"
                       className="w-full h-full object-cover"
                     />
@@ -225,53 +236,108 @@ const Navbar = () => {
           </DropdownMenu>
         </div>
       </div>
-      <Button className="z-50 w-10 h-10 md:hidden bg-transparent bdr p-0 hover:bg-transparent" onClick={() => setShowMenu(!showMenu)}>
-        {showMenu ?
-          <X size={24} strokeWidth={1.5} className="stroke-black dark:stroke-white" />
-        :
-          <Menu size={24} strokeWidth={1.5} className="stroke-black dark:stroke-white" />
-        }
+      <Button
+        className="z-50 w-10 h-10 md:hidden bg-transparent bdr p-0 hover:bg-transparent"
+        onClick={() => setShowMenu(!showMenu)}
+      >
+        {showMenu ? (
+          <X
+            size={24}
+            strokeWidth={1.5}
+            className="stroke-black dark:stroke-white"
+          />
+        ) : (
+          <Menu
+            size={24}
+            strokeWidth={1.5}
+            className="stroke-black dark:stroke-white"
+          />
+        )}
       </Button>
 
       {/* menu */}
-      <div className="p-5 absolute top-0 left-0 w-full h-[100vh] bg-white dark:bg-stone-950 dark:border-stone-700 border-b z-30 flex flex-col justify-start items-start gap-3" style={{ display: showMenu ? "flex" : "none" }}>
-        <div className="flex justify-start items-center gap-2">
-          <div className="w-6 h-6 rounded-full overflow-hidden">
-            <img
-              src={session?.user?.image || "https://via.placeholder.com/150"}
-              alt="profile"
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <p className="text-base">{session?.user?.name}</p>
-        </div>
-        <div className="flex justify-start items-center gap-2">
-          {session?.lifeAuUser?.mode === "admin" && (
-            <div className="px-3 rounded-md bg-purple-200 dark:bg-purple-500 flex justify-center items-center">
-              <p className="text-sm font-medium text-purple-500 dark:text-purple-200 font-mono">
-                Admin
-              </p>
+      <div
+        className="p-5 absolute top-0 left-0 w-full h-[100vh] bg-white dark:bg-stone-950 dark:border-stone-700 border-b z-30 flex flex-col justify-start items-start gap-3"
+        style={{ display: showMenu ? "flex" : "none" }}
+      >
+        {session?.user && (
+          <div className="w-full h-10 flex justify-start items-center gap-2">
+            <div className="w-8 h-8 rounded-full overflow-hidden">
+              <img
+                src={session?.user?.image || "https://via.placeholder.com/150"}
+                alt="profile"
+                className="w-full h-full object-cover"
+              />
             </div>
-          )}
-        </div>
+            <p className="text-xl">{session?.user?.name}</p>
+            <div className="flex justify-start items-center gap-2">
+              {session?.lifeAuUser?.mode === "admin" && (
+                <div className="px-3 rounded-md bg-purple-200 dark:bg-purple-500 flex justify-center items-center">
+                  <p className="text-sm font-medium text-purple-500 dark:text-purple-200 font-mono">
+                    Admin
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+        <Button
+          onClick={() => {
+            router.push("/dashboard/profile/my-projects");
+            setShowMenu(false)
+          }}
+          className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+        >
+          <p className="text-sm">Profile</p>
+        </Button>
         {session?.lifeAuUser?.mode === "admin" && (
-          <Button onClick={() => router.push("/dashboard/admin/all-repositories")} className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+          <Button
+            onClick={() => {
+              router.push("/dashboard/admin/all-repositories")
+              setShowMenu(false)
+            }}
+            className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+          >
             <p className="text-sm">Dashboard</p>
           </Button>
         )}
-        <Button onClick={() => {}} className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+        <Button
+          onClick={() => setShowMenu(false)}
+          className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+        >
           <p className="text-sm">Feedback</p>
         </Button>
-        <Button onClick={() => {}} className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80">
+        <Button
+          onClick={() => setShowMenu(false)}
+          className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+        >
           <p className="text-sm">Help</p>
         </Button>
+        {session?.user ? (
+          <Button
+            onClick={() => {
+              handleLogout();
+              signOut({ redirectTo: "/landing" });
+            }}
+            className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+          >
+            <p className="text-sm">Logout</p>
+          </Button>
+        ) : (
+          <Button
+            onClick={() => {
+              signIn("github");
+            }}
+            className="flex p-0 bg-transparent text-black dark:text-white hover:bg-transparent hover:text-opacity-80"
+          >
+            <p className="text-sm">Login</p>
+          </Button>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger className="w-10 h-10 text-sm outline-none flex justify-center items-center gap-2 border dark:border-gray-400 rounded-md px-2 py-1">
             {activeTheme === "dark" && <Moon size={18} strokeWidth={1.5} />}
             {activeTheme === "light" && <Sun size={18} strokeWidth={1.5} />}
-            {activeTheme === "system" && (
-              <Laptop size={18} strokeWidth={1.5} />
-            )}
+            {activeTheme === "system" && <Laptop size={18} strokeWidth={1.5} />}
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuRadioGroup
@@ -279,9 +345,7 @@ const Navbar = () => {
               onValueChange={(value) => handleThemeChange(value)}
             >
               <DropdownMenuRadioItem value="dark">Dark</DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="light">
-                Light
-              </DropdownMenuRadioItem>
+              <DropdownMenuRadioItem value="light">Light</DropdownMenuRadioItem>
               <DropdownMenuRadioItem value="system">
                 System
               </DropdownMenuRadioItem>
