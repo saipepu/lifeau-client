@@ -13,7 +13,16 @@ import Tabbar from '@/app/_components/Tabbar';
 const page = () => {
 
   const router = useRouter();
-  const adminTabs = ['All Repositories', 'Resources', 'Settings']
+  const adminTabs = [
+    {
+      name: "All Repositories",
+      link: "/dashboard/admin/all-repositories",
+    },
+    {
+      name: "Resources",
+      link: "/dashboard/admin/resources",
+    }
+  ];
   const [userContainers, setUserContainers] = useState<any[]>([]);
   const [allUsersContainers, setAllUsersContainers] = useState<any[]>([]);
   const { data: session } = useSession();
@@ -61,7 +70,7 @@ const page = () => {
         <div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 p-5 pt-0'>
           {allUsersContainers.map((container, index) => {
             return (
-              <div key={index} className='col-span-1' onClick={() => router.push(`/dashboard/project/${container?.name}--of-${userContainers.length}`)}>
+              <div key={index} className='col-span-1' onClick={() => router.push(`/dashboard/admin/all-repositories/${container?.name}/overview`)}>
                 <RepoCard container={container} adminView={false} />
               </div>
             )
