@@ -16,7 +16,16 @@ const page = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const tabs = ['All', 'K8s Deployments', 'K8s Services', 'K8s Ingresses']
-  const adminTabs = ["All Repositories", "Resources", "Settings"];
+  const adminTabs = [
+    {
+      name: "All Repositories",
+      link: "/dashboard/admin/all-repositories",
+    },
+    {
+      name: "Resources",
+      link: "/dashboard/admin/resources",
+    }
+  ];
   const [allUsersContainers, setAllUsersContainers] = useState<any[]>([]);
   const [selectedTab, setSelectedTab] = useState(tabs[0])
   const [deployments, setDeployments] = useState<any[]>([]);
