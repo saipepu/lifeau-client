@@ -1,0 +1,73 @@
+{
+    "metadata": {
+        "creationTimestamp": "2025-02-13T04:46:54.000Z",
+        "generation": 1,
+        "managedFields": [
+            {
+                "apiVersion": "networking.k8s.io/v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:spec": {
+                        "f:ingressClassName": {},
+                        "f:rules": {}
+                    }
+                },
+                "manager": "node-fetch",
+                "operation": "Update",
+                "time": "2025-02-13T04:46:54.000Z"
+            },
+            {
+                "apiVersion": "networking.k8s.io/v1",
+                "fieldsType": "FieldsV1",
+                "fieldsV1": {
+                    "f:status": {
+                        "f:loadBalancer": {
+                            "f:ingress": {}
+                        }
+                    }
+                },
+                "manager": "nginx-ingress-controller",
+                "operation": "Update",
+                "subresource": "status",
+                "time": "2025-02-13T04:47:35.000Z"
+            }
+        ],
+        "name": "life-au-client",
+        "namespace": "default",
+        "resourceVersion": "1078010",
+        "uid": "a3afd370-014e-49a4-bbb9-f7c61a9a317d"
+    },
+    "spec": {
+        "ingressClassName": "nginx",
+        "rules": [
+            {
+                "host": "life-au-client.life-au.live",
+                "http": {
+                    "paths": [
+                        {
+                            "backend": {
+                                "service": {
+                                    "name": "life-au-client",
+                                    "port": {
+                                        "number": 80
+                                    }
+                                }
+                            },
+                            "path": "/",
+                            "pathType": "Prefix"
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "status": {
+        "loadBalancer": {
+            "ingress": [
+                {
+                    "ip": "188.166.199.51"
+                }
+            ]
+        }
+    }
+}
