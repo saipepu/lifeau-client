@@ -37,6 +37,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         //   return false
         // }
 
+        console.log(dto, 'dto')
+        console.log(api)
         const response = await fetch(`${api}/auth/signup`, {
           method: "POST",
           headers: {
