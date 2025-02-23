@@ -67,7 +67,7 @@ const ProjectUploadForm = () => {
     }
     setTimeout(() => {
       setLoading(false);
-      router.push(`/dashboard/${githubUrl.split('/').splice(-1,1).join('/')}`);
+      router.push(`/dashboard/project/${githubUrl.split('/').splice(-1,1).join('/')}--of-º`);
     }, 1000);
     setTimeout(() => {
       setMessage("");
@@ -77,7 +77,7 @@ const ProjectUploadForm = () => {
 
   const GetUserGitRepos = async () => {
     console.log(session)
-    const response = await fetch("https://api.github.com/user/repos", {
+    const response = await fetch("https://api.github.com/user/repos?per_page=50", {
       method: "GET",
       headers: {
         "Accept": "application/json",
