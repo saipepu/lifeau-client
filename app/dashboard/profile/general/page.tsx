@@ -6,7 +6,7 @@ import SettingView from './_components/SettingView'
 
 const page = () => {
 
-  const tabs = ['All Repositories', 'General']
+  const tabs = ['My Projects', 'General']
 
   return (
     <div className='w-full h-full flex flex-col justify-start items-center'>
