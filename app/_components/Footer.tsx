@@ -19,7 +19,7 @@ const Footer = () => {
 
   return (
     <div className='w-full bdr border-0 border-t flex flex-col justify-start items-center'>
-      <div className='w-full max-w-[1500px] p-5 flex justify-center items-start gap-2'>
+      <div className='w-full max-w-[1600px] p-5 flex justify-center items-start gap-2'>
         <div className='w-full flex justify-start items-center gap-4'>
           <div className='flex justify-center items-center'>
             <svg width="14" height="12" viewBox="0 0 32 30" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,7 +43,7 @@ const Footer = () => {
             )
           })}
         </div>
-        <p className='text-xs text-stone-400 whitespace-nowrap'>© 2021 Life.au, by PePu & JuzBird</p>
+        <p className='text-xs text-stone-400 whitespace-nowrap'>© 2025 Life.au by PePu & JuzBird</p>
       </div>
     </div>
   )
