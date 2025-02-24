@@ -22,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Input } from "@/components/ui/input";
+import { updateContainer } from "@/app/api/container/updateContainer";
 
 const page = () => {
   const { projectName } = useParams();
@@ -46,14 +46,12 @@ const page = () => {
   const [selectedTab, setSelectedTab] = React.useState(adminTabs[1]);
   const [logs, setLogs] = useState<any[]>([]);
   const [project, setProject] = useState<any>({});
-  const [loading, setLoading] = useState<boolean>(false);
   const [message, setMessage] = useState<string>("");
-  const [confirmedProjectName, setConfirmedProjectName] = useState<string>("");
-  const [deployedLink, setDeployedLink] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
 
   const GetOneContainer = async () => {
     const response = await getOneContainer({
-      name: projectName?.toString().split("--of-")[0],
+      name: projectName?.toString(),
     });
     if (response.success) {
       setProject(response.message);
@@ -64,100 +62,56 @@ const page = () => {
 
   const DeleteContainer = async () => {
     const response = await deleteContainer({
-      name: projectName?.toString().split("--of-")[0],
+      name: projectName?.toString(),
     });
     if (response.success) {
-      router.push("/dashboard");
+      router.push(`/dashboard/admin/all-repositories`);
     } else {
       console.log(response.message, "response.message");
     }
   };
 
-  const handleBuild = async () => {
-    setLoading(true);
-    setMessage(
-      "It may take a few minutes to deploy your project. Please wait..."
-    );
-    if (!project?.githubUrl && !session?.lifeAuUser._id) {
-      window.alert("Error: Please wait");
-      return "Error: Missing required fields";
-    }
-    const response = await fetch(`${queueApi}/build`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        githubUrl: project?.githubUrl,
-        userId: session?.lifeAuUser._id,
-      }),
-    })
-      .then((res) => res.json())
-      .catch((error) => {
-        console.log("Error:", error);
-      });
-
-    if (response.success) {
+  const UpdateContainer = async (container: any) => {
+    const response = await updateContainer({ container})
+    if(response.success) {
       console.log(response);
-      setMessage("Building in Process. Please wait...");
-    } else {
-      console.error(response);
-    }
-    setTimeout(() => {
-      setLoading(false);
       GetOneContainer();
-    }, 1000);
-    setTimeout(() => {
-      setMessage("");
-    }, 3000);
-  };
+    } else {
+      console.log(response.message, "response.message");
+    }
+  }
 
   const handleDelete = async () => {
     DeleteContainer();
   };
 
-  const handleK8Deploy = async () => {
-    if (project?.name !== confirmedProjectName) {
-      setMessage("Project name does not match. Please try again.");
-      return;
-    }
-    const projectName = project?.name.split(".").join("-");
-    setLoading(true);
-    setMessage(
-      "It may take a few minutes to deploy your project. Please wait..."
-    );
-    if (!project?.githubUrl && !session?.lifeAuUser._id) {
-      window.alert("Error: Please wait");
-      return "Error: Missing required fields";
-    }
-    const response = await fetch(`${k8Api}/initialize`, {
-      method: "POST",
+  const handleK8sDown = async () => {
+    const response = await fetch(`${k8Api}/down`, {
+      method: "DELETE",
       headers: {
-        Accept: "application/json",
+        "Accept": "application/json",
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        name: projectName,
-        image: "u6511923/" + project?.name,
-        port: 3000,
+        name: projectName?.toString().replace(".", "-"),
       }),
-    }).then((res) => res.json());
-
-    if (response.success) {
+    }).then((res) => res.json())
+    .catch((error) => {
+      console.log('Error:', error);
+    });
+    if(response.success) {
       console.log(response);
-      let res = `Kubernetes Deployment Successfull! 🚀 App link => http://${project?.name}.life-au.live`;
-      let link = res.split("=>")[1].trim();
-      setDeployedLink(link);
-      setMessage("Your project has been deployed successfully!");
+      setMessage("Your K8s service has been stopped successfully!");
+      UpdateContainer({
+        ...project,
+        status: "READY",
+        deployedURL: "",
+      });
     } else {
       console.log(response);
-      setMessage("Error: Deployment failed. Please try again.");
+      setErrorMessage("Failed to stop K8s service. Please try again. Or the service may have already been stopped.");
     }
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  };
+  }
 
   useEffect(() => {
     EmitSocket("joinRoom", "life.au");
@@ -185,7 +139,6 @@ const page = () => {
       <div className="w-full flex flex-col justify-start items-center gap-1 bg-white dark:bg-stone-950 border-b dark:border-stone-700">
         <Tabbar
           tabs={adminTabs}
-          numberOfRepositories={path.split("--of-")[1]}
         />
       </div>
 
@@ -194,48 +147,87 @@ const page = () => {
           <div className="w-full flex justify-center items-start gap-2 bg-white dark:bg-stone-950 border-b dark:border-stone-700">
             <div className="w-full max-w-[1600px] p-5 py-8 flex justify-start items-center gap-2">
               <h1 className="pl-2 text-2xl font-semibold text-black dark:text-white text-left">
-                {projectName?.toString().split("--of-")[0]} • {selectedTab.name}
+                {projectName?.toString()} • {selectedTab.name}
               </h1>
             </div>
           </div>
           <div className="w-full max-w-[1600px] p-5 flex flex-col justify-start items-start gap-2">
             {/* danger zone */}
-            <div className="w-full p-5 bg-white dark:bg-stone-950 rounded-md bdr cursor-pointer duration-300 flex flex-col justify-start items-start gap-2">
+            <div className="w-full p-5 bg-white dark:bg-stone-950 rounded-md bdr cursor-pointer duration-300 flex flex-col justify-start items-start gap-5">
               <p className="text-lg font-medium text-red-400">Danger Zone</p>
-              <p className="text-sm text-stone-400 dark:text-stone-500">
-                Be careful with this section. The action are irreversible.
-              </p>
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button className="p-2 bg-red-500 h-8 rounded-md flex justify-center items-center">
-                    <p className="text-sm text-white whitespace-nowrap">
-                      Delete
-                    </p>
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>⚠️ Logout Alert!</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you sure you want to logout. You will be redirected to
-                      the landing page.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="h-8">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      className='className="p-2 bg-red-500 dark:bg-red-200 h-8 rounded-md flex justify-center items-center"'
-                      onClick={() => {
-                        handleDelete();
-                      }}
-                    >
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              <div className="w-full flex flex-col justify-start items-start gap-2">
+                <p className="text-sm text-stone-400 dark:text-stone-500">
+                  You can stop your K8s deployment here.
+                </p>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="p-2 border-[1px] border-red-500 rounded-md text-red-500 hover:bg-red-500 hover:text-white bg-transparent h-8 flex justify-center items-center">
+                      <p className="text-sm whitespace-nowrap">
+                        Stop
+                      </p>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>⚠️ K8s Service Stopping Alert!</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to stop your service? The current project Link will be disabled.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="h-8">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        className='className="p-2 bg-red-500 dark:bg-red-200 h-8 rounded-md flex justify-center items-center"'
+                        onClick={() => {
+                          handleK8sDown();
+                        }}
+                      >
+                        Stop
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+                {message && <p className="text-sm text-gray-400">{message}</p>}
+                {errorMessage && <p className="text-sm text-red-500">{errorMessage}</p>}
+              </div>
+              <div className="w-full h-[1px] bg-stone-300 dark:bg-stone-700"></div>
+              <div className="w-full flex flex-col justify-start items-start gap-2">
+                <p className="text-sm text-stone-400 dark:text-stone-500">
+                  Be careful with this section. The actions are irreversible.
+                </p>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button className="p-2 bg-red-500 h-8 rounded-md flex justify-center items-center">
+                      <p className="text-sm text-white whitespace-nowrap">
+                        Delete
+                      </p>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>⚠️ Project Deletion Alert!</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you sure you want to delete your project?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="h-8">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        className='className="p-2 bg-red-500 dark:bg-red-200 h-8 rounded-md flex justify-center items-center"'
+                        onClick={() => {
+                          handleDelete();
+                        }}
+                      >
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </div>
           </div>
         </div>
