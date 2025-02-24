@@ -65,9 +65,11 @@ const ProjectUploadForm = () => {
     else {
       console.error(response);
     }
+    console.log('handleSubmit', response);
     setTimeout(() => {
       setLoading(false);
-      router.push(`/dashboard/project/${githubUrl.split('/').splice(-1,1).join('/')}--of-º`);
+      let projectName = githubUrl.split('/')[githubUrl.split('/').length - 1]
+      router.push(`/dashboard/profile/my-projects/${projectName}`);
     }, 1000);
     setTimeout(() => {
       setMessage("");
