@@ -90,7 +90,7 @@ const page = () => {
           numberOfRepositories={allUsersContainers.length.toString()}
         />
       </div>
-      <div className="w-full max-w-[1600px] flex-1 flex flex-col justify-start items-center gap-1 bg-transparent pb-10">
+      <div className="w-full flex-1 flex flex-col justify-start items-center gap-1 bg-transparent pb-10">
         <div className='w-full flex-1 flex flex-col justify-start items-center bg-transparent'>
           <div className='w-full flex justify-center items-center gap-2 bg-white dark:bg-stone-950 border-b dark:border-stone-700'>
             <div className='w-full max-w-[1600px] p-5 py-8 flex justify-start items-center gap-2'>
@@ -99,7 +99,7 @@ const page = () => {
           </div>
 
           <div className="w-full max-w-[1600px] h-full flex justify-center items-start bg-transparent">
-            <div className="w-full h-full max-w-[15%] hidden md:flex flex-col gap-3 justify-start items-start p-5">
+            <div className="w-full h-full max-w-[15%] min-w-[200px] hidden md:flex flex-col gap-3 justify-start items-start p-5">
               {tabs.map((tab, index) => {
                 return (
                   <p
