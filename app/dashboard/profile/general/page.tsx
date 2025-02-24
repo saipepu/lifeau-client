@@ -8,13 +8,13 @@ const page = () => {
 
   const tabs = [
     {
+      name: "My Projects",
+      link: '/dashboard/profile/my-projects'
+    },
+    {
       name: "General",
       link: '/dashboard/profile/general'
     },
-    {
-      name: "My Projects",
-      link: '/dashboard/profile/my-projects'
-    }
   ]
 
   return (
