@@ -1,7 +1,19 @@
 FROM node:18-alpine AS base
 
 FROM base AS deps
-RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache \
+    libc6-compat \
+    chromium \
+    chromium-chromedriver \
+    nss \
+    freetype \
+    harfbuzz \
+    ca-certificates \
+    ttf-freefont
+
+# Set Puppeteer to use system-installed Chromium
+ENV PUPPETEER_EXECUTABLE_PATH="/usr/bin/chromium-browser"
+
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
@@ -12,6 +24,7 @@ COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 # add env here
 
+RUN rm -rf .env.local
 RUN npm run build
 
 FROM base AS runner
