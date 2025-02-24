@@ -36,7 +36,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         // if(!user.email?.endsWith('@au.edu')) {
         //   return false
         // }
+        //NEXT_PUBLIC_CONSUMER_API_URL=http://localhost:4002/_api
+        // NEXT_PUBLIC_SOCKET_API_URL=http://localhost:4002/socket
+        // NEXT_PUBLIC_PRODUCER_API_URL=http://localhost:4001/_api/producer
 
+        console.log(process.env.NEXT_PUBLIC_CONSUMER_API_URL)
+        console.log(process.env.NEXT_PUBLIC_SOCKET_API_URL)
+        console.log(process.env.NEXT_PUBLIC_PRODUCER_API_URL)
         console.log(dto, 'dto')
         console.log(api)
         const response = await fetch(`${api}/auth/signup`, {
