@@ -4,7 +4,6 @@ import React, { useEffect, useState } from 'react'
 import Searchbar from '../../_components/Searchbar'
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { getUserContainers } from '@/app/api/container/getUserContainers';
 import { getAllUsersContainers } from '@/app/api/container/getAllUsersContainers';
 import { EmitSocket } from '@/utils/socket/SocketEmit';
 import RepoCard from '../../_components/RepoCard';
@@ -23,21 +22,8 @@ const page = () => {
       link: "/dashboard/admin/resources",
     }
   ];
-  const [userContainers, setUserContainers] = useState<any[]>([]);
   const [allUsersContainers, setAllUsersContainers] = useState<any[]>([]);
   const { data: session } = useSession();
-
-  const GetUserContainers = async () => {
-    if(!session?.lifeAuUser?._id) return;
-    const response = await getUserContainers({ userId: session?.lifeAuUser?._id });
-    console.log('userContainers', response)
-
-    if(response.success) {
-      setUserContainers(response?.message.map((container: any) => container.container));
-    } else {
-      console.log('Error GetUserContainers', response)
-    }
-  }
 
   const GetAllUsersContainers = async () => {
     const response = await getAllUsersContainers();
@@ -53,11 +39,7 @@ const page = () => {
   // Handle Socket
   useEffect(() => {
     // EmitSocket("joinRoom", "life.au");
-    if(session?.lifeAuUser?.mode === 'admin') {
-      GetAllUsersContainers();
-    } else {
-      GetUserContainers();
-    }
+    GetAllUsersContainers();
   }, [session])
 
   return (
