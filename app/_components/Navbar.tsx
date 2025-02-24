@@ -55,10 +55,10 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (path.includes("project")) {
-      setSubPage(path.split("/")[3].split("--of-")[0]);
+    if (path.includes("overview")) {
+      setSubPage(path.split("/")[path.split("/").length - 2]);
     } else {
-      setSubPage("");
+      setSubPage(path.split("/")[path.split("/").length - 1])
     }
   }, [path]);
 
