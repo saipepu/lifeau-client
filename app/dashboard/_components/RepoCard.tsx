@@ -38,7 +38,8 @@ const RepoCard = ({ container, adminView }: { container: any, adminView: boolean
           <p className="text-sm font-medium">{container?.name}</p>
           <div className={`
             font-semibold p-1 px-2 ml-auto text-xs rounded-full
-            ${container?.status === "DEPLOYED" && "text-green-500 bg-green-200 dark:opacity-90"}
+            ${container?.status === "READY" && "text-green-500 bg-green-200 dark:opacity-90"}
+            ${container?.status === "DEPLOYED" && "text-purple-500 bg-purple-200 dark:opacity-90"}
             ${container?.status === "PENDING" && "text-yellow-500 bg-yellow-200 dark:opacity-90"}
             ${container?.status === "FAILED" && "text-red-500 bg-red-200 dark:opacity-90"}
             `}>
