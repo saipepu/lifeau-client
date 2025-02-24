@@ -1,13 +1,13 @@
 "use client";
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../_components/Navbar'
 import { AnimatedBeamDemo } from './_components/AnimatedDiagram'
 import { Button } from '@/components/ui/button'
 import { SparklesPreview } from './_components/Sparkle'
 import { ThemeContext } from '@/utils/hooks/themeContext';
 import Footer from '../_components/Footer';
-import { useSession } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 const Landing = () => {
@@ -41,10 +41,13 @@ const Landing = () => {
             </p>
             <Button
               onClick={() => {
+                if(!session) {
+                  signIn("github");
+                }
                 if(session?.lifeAuUser.mode === 'admin') {
                   router.push('/dashboard/admin/all-repositories')
                 } else {
-                  router.push('/dashboard/profile/all-repositories')
+                  router.push('/dashboard/profile/my-projects')
                 }
               }}
               className="z-20 rounded-full bg-black dark:bg-white"
